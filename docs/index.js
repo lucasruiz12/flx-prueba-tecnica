@@ -4,8 +4,8 @@
 */
 
 function reverseString(str) {
-  // Tu solución acá  
-}
+  return str.split("").reverse().join("");
+};
 
 /*
   Ejercicio 2: Check for Palindrome
@@ -13,8 +13,10 @@ function reverseString(str) {
   y devuelva true si la cadena es un palíndromo, y false en caso contrario.
 */
 function isPalindrome(str) {
-  // Tu solución acá
-}
+  const palindrome = reverseString(str);
+  // const palindrome = str.split("").reverse().join(""); // En caso de no contar con reverseString, deberíamos resolverlo así
+  return palindrome === str;
+};
 
 /*
   Ejercicio 3: Find the Nearest Pair
@@ -30,8 +32,20 @@ function isPalindrome(str) {
 */
 
 function closestPair(arr) {
-  // Tu solución acá
-}
+  arr.sort((a, b) => a - b);
+  let indexFirst = 0;
+  let minInterval = Infinity;
+
+  for (let i = 0; i < arr.length - 1; i++) {
+    const currentInterval = arr[i + 1] - arr[i];
+    if (currentInterval < minInterval) {
+      minInterval = currentInterval;
+      indexFirst = i;
+    };
+  };
+
+  return [arr[indexFirst], arr[indexFirst + 1]];
+};
 
 
 /*
@@ -67,8 +81,53 @@ function closestPair(arr) {
 */
 
 class Calculator {
-  // Tu solución acá
-}
+  constructor() {
+    this.lastResult = null;
+  }
+  add(a, b) {
+    if (a && b) {
+      this.lastResult = a + b;
+      return a + b;
+    } else {
+      return this.lastResult;
+    };
+  };
+  subtract(a, b) {
+    if (a && b) {
+      this.lastResult = a - b;
+      return a - b;
+    } else {
+      return this.lastResult;
+    }
+  };
+  multiply(a, b) {
+    if (a && b) {
+      this.lastResult = a * b;
+      return a * b;
+    } else {
+      return this.lastResult;
+    };
+  };
+  divide(a, b) {
+    if (b === 0) {
+      throw new Error("Division by zero is not allowed");
+    };
+    this.lastResult = a / b;
+    return a / b;
+  };
+  getLastResult() {
+    return this.lastResult;
+  }
+};
+
+Calculator.prototype.exponentiate = function (base, exponent) {
+  if (exponent < 0) {
+    throw new Error("Exponentiation with negative exponent is not allowed");
+  };
+  this.lastResult = Math.pow(base, exponent);
+  // this.lastResult = base ** exponent; // Se puede de ambas formas;
+  return this.lastResult;
+};
 
 module.exports = {
   closestPair,
