@@ -1,11 +1,20 @@
 import { Modal } from 'antd';
-import React from 'react'
+import React, { useState } from 'react'
+import FormAddUser from '../FormAddUser';
+import { useAppContext } from '../../context';
 
-const ModalAddUser = ({ showModal, hideModal }) => {
+const ModalAddUser = () => {
+
+    const [loading, setLoading] = useState(false);
+
+    const { showModal, setShowModal } = useAppContext();
 
     const handleOk = () => {
-        console.log("AGREGAR");
-        hideModal();
+        setLoading(true);
+        setTimeout(() => {
+            setShowModal(false);
+            setLoading(false);
+        }, 2000);
     };
 
     return (
@@ -13,11 +22,12 @@ const ModalAddUser = ({ showModal, hideModal }) => {
             title="Agregar usuario"
             open={showModal}
             onOk={handleOk}
-            onCancel={hideModal}
+            onCancel={() => setShowModal(false)}
             okText="Agregar"
+            okButtonProps={{ loading: loading }}
             cancelButtonProps={{ style: { display: "none" } }}
         >
-            <p>AGREGAR USUARIO</p>
+            <FormAddUser onSubmit={loading} />
         </Modal>
     );
 };

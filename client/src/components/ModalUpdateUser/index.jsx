@@ -1,11 +1,19 @@
+import React, { useEffect, useState } from 'react'
+import { useAppContext } from '../../context';
 import { Modal } from 'antd';
-import React from 'react'
+import FormUpdateUser from '../FormUpdateUser';
 
-const ModalUpdateUser = ({ showModal, hideModal, currentId }) => {
+const ModalUpdateUser = () => {
+
+    const [loading, setLoading] = useState(false);
+    const { users, currentId, showModal, setShowModal } = useAppContext();
 
     const handleOk = () => {
-        console.log("EDITAR", currentId);
-        hideModal();
+        setLoading(true);
+        setTimeout(() => {
+            setShowModal(false);
+            setLoading(false);
+        }, 2000);
     };
 
     return (
@@ -13,11 +21,12 @@ const ModalUpdateUser = ({ showModal, hideModal, currentId }) => {
             title="Editar usuario"
             open={showModal}
             onOk={handleOk}
-            onCancel={hideModal}
+            onCancel={() => setShowModal(false)}
             okText="Editar"
+            okButtonProps={{ loading: loading }}
             cancelButtonProps={{ style: { display: "none" } }}
         >
-            <p>EDITAR USUARIO {currentId}</p>
+            <FormUpdateUser onSubmit={loading} user={users.find(el => el.id === currentId)} />
         </Modal>
     );
 };

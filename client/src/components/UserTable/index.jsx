@@ -5,7 +5,7 @@ import connections from '../../connections';
 
 const UserTable = ({ openModal }) => {
 
-    const { users, setUsers } = useAppContext();
+    const { users, setUsers, usersToRender, setUsersToRender } = useAppContext();
 
     const columns = [
         {
@@ -63,13 +63,14 @@ const UserTable = ({ openModal }) => {
                     }
                 });
                 setUsers(usersWithKey);
+                setUsersToRender(usersWithKey);
             })
                 .catch(err => console.error(err));
         };
     }, [users]);
 
     return (
-        <Table columns={columns} dataSource={users} />
+        <Table columns={columns} dataSource={usersToRender} />
     );
 }
 

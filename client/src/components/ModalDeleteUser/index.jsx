@@ -1,24 +1,38 @@
+import React, { useEffect, useState } from 'react'
 import { Modal } from 'antd';
-import React from 'react'
+import { useAppContext } from '../../context';
 
-const ModalDeleteUser = ({ showModal, hideModal, currentId }) => {
+const ModalDeleteUser = () => {
+
+    const [loading, setLoading] = useState(false);
+    const [userToDelete, setUserToDelete] = useState({});
+
+    const { users, currentId, showModal, setShowModal } = useAppContext();
 
     const handleOk = () => {
-        console.log("ELIMINAR", currentId);
-        hideModal();
+        setLoading(true);
+        setTimeout(() => {
+            console.log("ELIMINANDO", userToDelete);
+            setShowModal(false);
+            setLoading(false);
+        }, 2000);
     };
+
+    useEffect(() => {
+        setUserToDelete(users.find(el => el.id === currentId));
+    }, [currentId]);
 
     return (
         <Modal
             title="Eliminar usuario"
             open={showModal}
             onOk={handleOk}
-            onCancel={hideModal}
+            onCancel={() => setShowModal(false)}
             okText="Eliminar"
             cancelText="Cancelar"
-            okButtonProps={{ danger: true }}
+            okButtonProps={{ danger: true, loading: loading }}
         >
-            <p>ELIMINAR USUARIO {currentId}</p>
+            <p>¿Está seguro que quiere eliminar el usuario <b style={{ color: "red" }}>@{userToDelete.username}</b>?</p>
         </Modal>
     );
 };

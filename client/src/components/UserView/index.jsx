@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
+import { useAppContext } from '../../context';
 import { Button } from 'antd';
 import BreadcrumbTitle from '../BreadcrumbTitle';
 import FilterActions from '../FilterActions';
 import UserTable from '../UserTable';
-import './style.css';
 import ModalAddUser from '../ModalAddUser';
 import ModalDeleteUser from '../ModalDeleteUser';
 import ModalUpdateUser from '../ModalUpdateUser';
+import './style.css';
 
 const UserView = () => {
-
-    const [showModal, setShowModal] = useState(false);
     const [actionToShow, setActionToShow] = useState("");
-    const [currentId, setCurrentId] = useState("");
+    const { setCurrentId, showModal, setShowModal } = useAppContext();
 
     const openModal = (action, id) => {
         setShowModal(true);
@@ -24,7 +23,7 @@ const UserView = () => {
         <div className="container-user-view">
             <BreadcrumbTitle />
             <div className="container-actions">
-                <div>
+                <div style={{width: "80%"}}>
                     <FilterActions />
                 </div>
                 <div>
@@ -34,11 +33,11 @@ const UserView = () => {
             <UserTable openModal={openModal} />
             {
                 showModal &&
-                    actionToShow === "add" ? <ModalAddUser showModal={showModal} hideModal={() => setShowModal(false)} />
+                    actionToShow === "add" ? <ModalAddUser />
                     :
-                    actionToShow === "edit" ? <ModalUpdateUser showModal={showModal} hideModal={() => setShowModal(false)} currentId={currentId} />
+                    actionToShow === "edit" ? <ModalUpdateUser />
                         :
-                        actionToShow === "delete" ? <ModalDeleteUser showModal={showModal} hideModal={() => setShowModal(false)} currentId={currentId} />
+                        actionToShow === "delete" ? <ModalDeleteUser />
                             :
                             null
             }
