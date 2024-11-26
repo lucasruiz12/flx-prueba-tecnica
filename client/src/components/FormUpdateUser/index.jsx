@@ -1,14 +1,22 @@
 import React, { useEffect } from 'react';
 import { Form, Input, Select, InputNumber } from 'antd';
 import { useAppContext } from '../../context';
+import connections from '../../connections';
 
 const { Option } = Select;
 
 const FormUpdateUser = ({ onSubmit, user }) => {
     const [form] = Form.useForm();
 
+    const { setUpdateTable } = useAppContext();
+
     const handleFinish = (values) => {
-        console.log("Datos actualizados:", values);
+        connections.updateUser(user.id, values).then(response => {
+            if(response.status === 200){
+                setUpdateTable(true);
+            };
+        })
+            .catch(err => console.error(err));
     };
 
     useEffect(() => {

@@ -1,13 +1,35 @@
 import React, { useEffect } from 'react';
 import { Form, Input, Select, InputNumber } from 'antd';
+import connections from '../../connections';
+import { useAppContext } from '../../context';
 
 const { Option } = Select;
 
 const FormAddUser = ({ onSubmit }) => {
     const [form] = Form.useForm();
 
+    const { setUpdateTable } = useAppContext();
+
+    const generateUUID = () => {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+            const r = (Math.random() * 16) | 0;
+            const v = c === 'x' ? r : (r & 0x3) | 0x8;
+            return v.toString(16);
+        });
+    };
+
     const handleFinish = (values) => {
-        console.log("Datos enviados:", values);
+        const newUser = {
+            ...values,
+            id: generateUUID(),
+        };
+
+        connections.createUser(newUser).then(response => {
+            if (response.status === 201) {
+                setUpdateTable(true);
+            };
+        })
+            .catch(err => console.error(err));
     };
 
     useEffect(() => {

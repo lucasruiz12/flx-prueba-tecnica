@@ -30,7 +30,7 @@ const UserView = () => {
                     <Button type="primary" size="large" onClick={() => openModal("add")}>Agregar usuario</Button>
                 </div>
             </div>
-            <UserTable openModal={openModal} />
+            <UserTable openModal={openModal} actionToShow={actionToShow} />
             {
                 showModal &&
                     actionToShow === "add" ? <ModalAddUser />

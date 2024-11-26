@@ -1,21 +1,28 @@
 import React, { useEffect, useState } from 'react'
 import { Modal } from 'antd';
 import { useAppContext } from '../../context';
+import connections from '../../connections';
 
 const ModalDeleteUser = () => {
 
     const [loading, setLoading] = useState(false);
     const [userToDelete, setUserToDelete] = useState({});
 
-    const { users, currentId, showModal, setShowModal } = useAppContext();
+    const { users, currentId, showModal, setShowModal, setUpdateTable, reloadData } = useAppContext();
 
     const handleOk = () => {
         setLoading(true);
-        setTimeout(() => {
-            console.log("ELIMINANDO", userToDelete);
-            setShowModal(false);
-            setLoading(false);
-        }, 2000);
+        connections.deleteUser(userToDelete.id).then(response => {
+            if(response.status === 200){
+                setUpdateTable(true);
+                setTimeout(() => {
+                    setShowModal(false);
+                    setLoading(false);
+                    reloadData();
+                }, 2000);
+            };
+        })
+        .catch(err => console.error(err));
     };
 
     useEffect(() => {
